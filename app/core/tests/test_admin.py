@@ -21,6 +21,7 @@ class AdminSiteTests(TestCase):
             name='Test User Full Name'
         )
 
+        # Preload all of the profile tables with their initial values.
         gender.objects.create(id=0, gender='None')
         gender.objects.create(id=1, gender='Male')
         gender.objects.create(id=2, gender='Female')

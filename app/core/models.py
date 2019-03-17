@@ -102,19 +102,25 @@ class usstates(models.Model):
     usstate = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.usstates
+        return self.usstate
 
 
 class User(AbstractBaseUser, PermissionsMixin):
     # Custom user model that supports using email instead of username.
-    email = models.EmailField(max_length=255, unique=True)
+    email = models.EmailField(max_length=255,
+                              unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     profile_locked = models.BooleanField(default=0)
-    profile_pic = models.ImageField(upload_to='profile_pics', blank=True)
-    gender = models.ForeignKey(gender, default=0, on_delete=models.CASCADE)
-    race = models.ForeignKey(race, default=0, on_delete=models.CASCADE)
+    profile_pic = models.ImageField(upload_to='profile_pics',
+                                    blank=True)
+    gender = models.ForeignKey(gender,
+                               default=0,
+                               on_delete=models.CASCADE)
+    race = models.ForeignKey(race,
+                             default=0,
+                             on_delete=models.CASCADE)
     ethnicity = models.ForeignKey(ethnicity,
                                   default=0,
                                   on_delete=models.CASCADE)

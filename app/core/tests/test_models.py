@@ -5,9 +5,66 @@ from core.models import gender, race, ethnicity, education, religion, \
                         usstates
 
 
+def profile_gender(which='None'):
+    # Find and return gender.
+    return gender.objects.get(gender=which)
+
+
+def profile_race(which='None'):
+    # Find and return race.
+    return race.objects.get(race=which)
+
+
+def profile_ethnicity(which='None'):
+    # Find and return ethnicity.
+    return ethnicity.objects.get(ethnicity=which)
+
+
+def profile_education(which='None'):
+    # Find and return education.
+    return education.objects.get(education=which)
+
+
+def profile_religion(which='None'):
+    # Find and return religion.
+    return religion.objects.get(religion=which)
+
+
+def profile_politics(which='None'):
+    # Find and return politics.
+    return politics.objects.get(politics=which)
+
+
+def profile_age(which='None'):
+    # Find and return age.
+    return age.objects.get(age=which)
+
+
+def profile_income(which='None'):
+    # Find and return income.
+    return income.objects.get(income=which)
+
+
+def profile_polideology(which='None'):
+    # Find and return polideology.
+    return polideology.objects.get(politicalideology=which)
+
+
+def profile_usregion(which='None'):
+    # Find and return region.
+    return usregion.objects.get(usregion=which)
+
+
+def profile_usstate(which='NON-US LOCATION'):
+    # Find and return state.
+    return usstates.objects.get(usstate=which)
+
+
 class ModelTests(TestCase):
 
     def setUp(self):
+        # Preload all of the profile tables with their initial values.
+
         gender.objects.create(id=0, gender='None')
         gender.objects.create(id=1, gender='Male')
         gender.objects.create(id=2, gender='Female')
@@ -145,28 +202,46 @@ class ModelTests(TestCase):
         # Test creating a new user with an email is successful.
         email = 'test@simpoll.org'
         password = 'testpass123'
-        # gender = object
-        # gender = gender.objects.get(gender='Male')
-        # race = 'White'
-        # ethnicity = 'Not Hispanic or Latino'
+        gender = profile_gender(which='Female')
+        race = profile_race(which='Asian')
+        ethnicity = profile_ethnicity(which='Hispanic or Latino')
+        education = profile_education(which='Bachlors Degree')
+        religion = profile_religion(which='Christianity')
+        politics = profile_politics(which='Republican')
+        age = profile_age(which='60 to 69')
+        income = profile_income(which='$100K +')
+        polideology = profile_polideology(which='Conservatism')
+        usregion = profile_usregion(which='North East US')
+        usstate = profile_usstate(which='PENNSYLVANIA')
         user = get_user_model().objects.create_user(
             email=email,
-            password=password
-            # gender=gender,
-            # race=race,
-            # ethnicity=ethnicity,
-            # education='Bachlors Degree',
-            # religion='Christanity',
-            # politics='Republican',
-            # age='60 to 69',
-            # income='$100K +',
-            # polideology='Conservatism',
-            # usregion='North East US',
-            # usstate='Pennsylvania'
+            password=password,
+            gender=gender,
+            race=race,
+            ethnicity=ethnicity,
+            education=education,
+            religion=religion,
+            politics=politics,
+            age=age,
+            income=income,
+            politicalideology=polideology,
+            usregion=usregion,
+            usstate=usstate
         )
 
         self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
+        self.assertEqual(user.gender, gender)
+        self.assertEqual(user.race, race)
+        self.assertEqual(user.ethnicity, ethnicity)
+        self.assertEqual(user.education, education)
+        self.assertEqual(user.religion, religion)
+        self.assertEqual(user.politics, politics)
+        self.assertEqual(user.age, age)
+        self.assertEqual(user.income, income)
+        self.assertEqual(user.politicalideology, polideology)
+        self.assertEqual(user.usstate, usstate)
+        self.assertEqual(user.usregion, usregion)
 
     def test_new_user_email_normalized(self):
         # Test the email for a new user is normalized.

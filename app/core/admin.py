@@ -19,6 +19,11 @@ class UserAdmin(BaseUserAdmin):
             {'fields': ('is_active', 'is_staff', 'is_superuser')}
         ),
         (_('Important dates'), {'fields': ('last_login',)}),
+        (_('Profile Demographics'), {'fields': ('gender', 'race', 'ethnicity',
+                                                'education', 'religion',
+                                                'politics', 'age', 'income',
+                                                'politicalideology',
+                                                'usregion', 'usstate')}),
     )
     add_fieldsets = (
         (None, {
