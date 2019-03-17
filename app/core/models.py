@@ -28,12 +28,118 @@ class UserManager(BaseUserManager):
         return user
 
 
+class gender(models.Model):
+    gender = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.gender
+
+
+class race(models.Model):
+    race = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.race
+
+
+class ethnicity(models.Model):
+    ethnicity = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.ethnicity
+
+
+class education(models.Model):
+    education = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.education
+
+
+class religion(models.Model):
+    religion = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.religion
+
+
+class politics(models.Model):
+    politics = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.politics
+
+
+class polideology(models.Model):
+    politicalideology = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.politicalideology
+
+
+class age(models.Model):
+    age = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.age
+
+
+class income(models.Model):
+    income = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.income
+
+
+class usregion(models.Model):
+    usregion = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.usregion
+
+
+class usstates(models.Model):
+    usstate = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.usstates
+
+
 class User(AbstractBaseUser, PermissionsMixin):
     # Custom user model that supports using email instead of username.
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    profile_locked = models.BooleanField(default=0)
+    profile_pic = models.ImageField(upload_to='profile_pics', blank=True)
+    gender = models.ForeignKey(gender, default=0, on_delete=models.CASCADE)
+    race = models.ForeignKey(race, default=0, on_delete=models.CASCADE)
+    ethnicity = models.ForeignKey(ethnicity,
+                                  default=0,
+                                  on_delete=models.CASCADE)
+    education = models.ForeignKey(education,
+                                  default=0,
+                                  on_delete=models.CASCADE)
+    religion = models.ForeignKey(religion,
+                                 default=0,
+                                 on_delete=models.CASCADE)
+    politics = models.ForeignKey(politics,
+                                 default=0,
+                                 on_delete=models.CASCADE)
+    age = models.ForeignKey(age,
+                            default=0,
+                            on_delete=models.CASCADE)
+    income = models.ForeignKey(income,
+                               default=0,
+                               on_delete=models.CASCADE)
+    politicalideology = models.ForeignKey(polideology,
+                                          default=0,
+                                          on_delete=models.CASCADE)
+    usregion = models.ForeignKey(usregion,
+                                 default=0, on_delete=models.CASCADE)
+    usstate = models.ForeignKey(usstates,
+                                default=0, on_delete=models.CASCADE)
 
     objects = UserManager()
 

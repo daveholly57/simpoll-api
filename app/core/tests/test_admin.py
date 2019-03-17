@@ -1,13 +1,26 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 from core.models import gender, race, ethnicity, education, religion, \
                         politics, age, income, polideology, usregion, \
                         usstates
 
 
-class ModelTests(TestCase):
+class AdminSiteTests(TestCase):
 
     def setUp(self):
+        self.client = Client()
+        self.admin_user = get_user_model().objects.create_superuser(
+            email='admin@simpoll.org',
+            password='test123'
+        )
+        self.client.force_login(self.admin_user)
+        self.user = get_user_model().objects.create_user(
+            email='test@simpoll.org',
+            password='test123',
+            name='Test User Full Name'
+        )
+
         gender.objects.create(id=0, gender='None')
         gender.objects.create(id=1, gender='Male')
         gender.objects.create(id=2, gender='Female')
@@ -141,51 +154,24 @@ class ModelTests(TestCase):
         usstates.objects.create(id=51, usstate='WASHINGTON DC')
         usstates.objects.create(id=52, usstate='PUERTO RICO')
 
-    def test_create_user_with_email_successful(self):
-        # Test creating a new user with an email is successful.
-        email = 'test@simpoll.org'
-        password = 'testpass123'
-        # gender = object
-        # gender = gender.objects.get(gender='Male')
-        # race = 'White'
-        # ethnicity = 'Not Hispanic or Latino'
-        user = get_user_model().objects.create_user(
-            email=email,
-            password=password
-            # gender=gender,
-            # race=race,
-            # ethnicity=ethnicity,
-            # education='Bachlors Degree',
-            # religion='Christanity',
-            # politics='Republican',
-            # age='60 to 69',
-            # income='$100K +',
-            # polideology='Conservatism',
-            # usregion='North East US',
-            # usstate='Pennsylvania'
-        )
+    def test_users_listed(self):
+        # Test that users are listed on user page.
+        url = reverse('admin:core_user_changelist')
+        res = self.client.get(url)
 
-        self.assertEqual(user.email, email)
-        self.assertTrue(user.check_password(password))
+        self.assertContains(res, self.user.name)
+        self.assertContains(res, self.user.email)
 
-    def test_new_user_email_normalized(self):
-        # Test the email for a new user is normalized.
-        email = 'test@simpoll.org'
-        user = get_user_model().objects.create_user(email, 'test123')
+    def test_user_change_page(self):
+        # Test that the user edit page works.
+        url = reverse('admin:core_user_change', args=[self.user.id])
+        res = self.client.get(url)
 
-        self.assertEqual(user.email, email.lower())
+        self.assertEqual(res.status_code, 200)
 
-    def test_new_user_invalid_email(self):
-        # Test creating user with no email raises error.
-        with self.assertRaises(ValueError):
-            get_user_model().objects.create_user(None, 'test123')
+    def test_create_user_page(self):
+        # Test that the create user page works.
+        url = reverse('admin:core_user_add')
+        res = self.client.get(url)
 
-    def test_create_new_superuser(self):
-        # Test creating a new superuser.
-        user = get_user_model().objects.create_superuser(
-            'super@simpoll.org',
-            'Test1234'
-        )
-
-        self.assertTrue(user.is_superuser)
-        self.assertTrue(user.is_staff)
+        self.assertEqual(res.status_code, 200)
