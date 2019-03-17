@@ -116,36 +116,49 @@ class User(AbstractBaseUser, PermissionsMixin):
     profile_pic = models.ImageField(upload_to='profile_pics',
                                     blank=True)
     gender = models.ForeignKey(gender,
-                               default=0,
+                               null=True,
+                               default=None,
                                on_delete=models.CASCADE)
     race = models.ForeignKey(race,
-                             default=0,
+                             null=True,
+                             default=None,
                              on_delete=models.CASCADE)
     ethnicity = models.ForeignKey(ethnicity,
-                                  default=0,
+                                  null=True,
+                                  default=None,
                                   on_delete=models.CASCADE)
     education = models.ForeignKey(education,
-                                  default=0,
+                                  null=True,
+                                  default=None,
                                   on_delete=models.CASCADE)
     religion = models.ForeignKey(religion,
-                                 default=0,
+                                 null=True,
+                                 default=None,
                                  on_delete=models.CASCADE)
     politics = models.ForeignKey(politics,
-                                 default=0,
+                                 null=True,
+                                 default=None,
                                  on_delete=models.CASCADE)
     age = models.ForeignKey(age,
-                            default=0,
+                            null=True,
+                            default=None,
                             on_delete=models.CASCADE)
     income = models.ForeignKey(income,
-                               default=0,
+                               null=True,
+                               default=None,
                                on_delete=models.CASCADE)
     politicalideology = models.ForeignKey(polideology,
-                                          default=0,
+                                          null=True,
+                                          default=None,
                                           on_delete=models.CASCADE)
     usregion = models.ForeignKey(usregion,
-                                 default=0, on_delete=models.CASCADE)
+                                 null=True,
+                                 default=None,
+                                 on_delete=models.CASCADE)
     usstate = models.ForeignKey(usstates,
-                                default=0, on_delete=models.CASCADE)
+                                null=True,
+                                default=None,
+                                on_delete=models.CASCADE)
 
     objects = UserManager()
 
