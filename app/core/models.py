@@ -3,7 +3,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
                                        PermissionsMixin
-# from django.conf import settings
+from django.conf import settings
 
 
 class UserManager(BaseUserManager):
@@ -163,3 +163,59 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+class category(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    category = models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.category
+
+
+class subcategory(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    subcategory = models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.subcategory
+
+
+class questions(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    category = models.ForeignKey(category, on_delete=models.CASCADE)
+    sub_category = models.ForeignKey(subcategory, on_delete=models.CASCADE)
+    question_name = models.CharField(max_length=256)
+    question = models.TextField()
+    can_change_answer = models.BooleanField(default=True)
+    choice_a = models.CharField(max_length=32, default="Yes")
+    choice_b = models.CharField(max_length=32, default="No")
+
+    def __str__(self):
+        return self.question_name
+
+
+class answers(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    question = models.ForeignKey(questions, on_delete=models.CASCADE)
+    answer_date_time = models.DateTimeField(auto_now_add=True)  # changed to auto_now_add.
+    answer = models.CharField(max_length=32)
+
+    class Meta:
+        unique_together = (('id', 'user', 'question', 'answer_date_time'),)
+
+    def __str__(self):
+        return self.answer

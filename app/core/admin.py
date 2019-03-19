@@ -5,7 +5,8 @@ from django.utils.translation import gettext as _
 from core import models
 from core.models import gender, race, ethnicity, education, religion, \
                         politics, age, income, polideology, usregion, \
-                        usstates
+                        usstates, category, subcategory, questions, \
+                        answers
 
 
 class UserAdmin(BaseUserAdmin):
@@ -45,3 +46,7 @@ admin.site.register(income)
 admin.site.register(polideology)
 admin.site.register(usregion)
 admin.site.register(usstates)
+admin.site.register(category)
+admin.site.register(subcategory)
+admin.site.register(questions)
+admin.site.register(answers)
