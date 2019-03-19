@@ -164,6 +164,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
 
+
 class category(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -211,7 +212,7 @@ class answers(models.Model):
         on_delete=models.CASCADE
     )
     question = models.ForeignKey(questions, on_delete=models.CASCADE)
-    answer_date_time = models.DateTimeField(auto_now_add=True)  # changed to auto_now_add.
+    answer_date_time = models.DateTimeField(auto_now_add=True)
     answer = models.CharField(max_length=32)
 
     class Meta:
